@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react"
-
+import { Link } from "react-router-dom";
+import '../App.css'
 
 export default function Home() {
     const [ costumes, setCostumes] = useState([]);
@@ -26,18 +27,24 @@ export default function Home() {
 
         <div className="products-grid">
           {costumes.map(costume => (
-            <div key={costume.id} className="product-card">
-              {costume.image && (
-                <img 
-                  src={costume.image}
-                  alt={costume.name}
-                  className="product-image"
-                />
-              )}
-              <div className="product-title">
-                <h3 className="product-name">{costume.name}</h3>
-              </div>
-              <div className="product-info">
+            
+              <div key={costume.id} className="product-card">
+                {costume.image && (
+                  <Link to={`/product/${costume.id}`}>
+                  <img
+                    src={costume.image}
+                    alt={costume.name}
+                    className="product-image" />
+                  </Link>
+                )}
+                  
+                <div className="product-title">
+                  <Link to={`/product/${costume.id}`}>
+                  <h3 className="product-name">{costume.name}</h3>
+                  </Link>
+                </div>
+              
+            <div className="product-info">
                 <p className="product-price">${costume.price}</p>
                 <p className="product-size">Size: {costume.size}</p>
                 <p className="product-material">Material: {costume.material}</p>
@@ -45,10 +52,9 @@ export default function Home() {
                   <p className="product-movie">Movie: {costume.movie_name}</p>
                 )}
                 <p className="product-stock">
-                  {costume.stock_quantity > 0 
+                  {costume.stock_quantity > 0
                     ? `In Stock (${costume.stock_quantity} available )`
-                    : `Out of Stock`
-                  }
+                    : `Out of Stock`}
                 </p>
               </div>
               <div className="product-footer">

@@ -1,22 +1,67 @@
 import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import '../App.css'
 
-export default function Product{
-    const { id } = useParams();
-    const [ products, setProducts ] = useState([]);
+export default function Product() {
+  const { id } = useParams();
+  const [product, setProduct] = useState(null);
 
-     useEffect(() => {
-    fetch(`http://127.0.0.1:8000/api/view/${id}`) // yahan se data uthaae ga  
+  useEffect(() => {
+    fetch(`http://127.0.0.1:8000/api/view/${id}`)
       .then((res) => res.json())
-      .then((data) => setProducts(data))
+      .then((data) => setProduct(data))
       .catch((err) => console.error("Error fetching data:", err));
-    }, [id]);
-    if (!product) return <p>Loading....</p>
+  }, [id]);
 
-    return (
-        <><div className="navbar">
-            <img src="/src/assets/marvel.svg" alt="Marvel Logo"></img>
-            <h1>Spider-Man Merchandise</h1>
+  if (!product) return <p>Loading....</p>;
+
+  return (
+    <>
+      <div className="navbar">
+        <img src="/src/assets/marvel.svg" alt="Marvel Logo" />
+        <h1>Spider-Man Merchandise</h1>
+      </div>
+
+      <h2>Product Details</h2>
+
+      <div className="costume-container">
+        <div className="costume-grid">
+          <div className="costume-card">
+            {product.image && (
+              <img
+                src={product.image}
+                alt={product.name}
+                className="costume-image"
+              />
+            )}
+
+            <div className="costume-title">
+              <h3 className="costume-name">{product.name}</h3>
+            </div>
+
+            <div className="costume-info">
+              <p className="costume-description">{product.description}</p>
+              <p className="costume-price">Price: ${product.price}</p>
+              <p className="costume-size">Size: {product.size}</p>
+              <p className="costume-material">Material: {product.material}</p>
+
+              {product.is_from_movie && (
+                <p className="costume-movie">Movie: {product.movie_name}</p>
+              )}
+
+              <p className="costume-stock">
+                {product.stock > 0
+                  ? `In Stock (${product.stock} available)`
+                  : `Out of Stock`}
+              </p>
+
+              <div className="costume-footer">
+                <button className="add-to-cart-btn">Add to Cart</button>
+              </div>
+            </div>
+          </div>
         </div>
-        </>
-    )
+      </div>
+    </>
+  );
 }

@@ -1,7 +1,7 @@
 from rest_framework import serializers
-from .models import Note
+from .models import Costume
 
-class NoteSerializer(serializers.ModelSerializer):
+class CostumeSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Note
+        model = Costume
         fields = '__all__'

@@ -32,6 +32,7 @@ def get_costumes(request):
 
         }) 
     return Response(data)
+@api_view(['GET'])
 def view_product(request, product_id):
     costume = get_object_or_404(Costume, id=product_id)
 
