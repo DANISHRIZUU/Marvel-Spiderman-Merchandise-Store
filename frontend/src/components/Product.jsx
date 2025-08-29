@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import '../App.css'
+import swal from "sweetalert2";
 
 export default function Product() {
   const { id } = useParams();
   const [product, setProduct] = useState(null);
+  const [ showAlert, setShowAlert] = useState(false)
 
   useEffect(() => {
     fetch(`http://127.0.0.1:8000/api/view/${id}`)
@@ -56,7 +58,14 @@ export default function Product() {
               </p>
 
               <div className="costume-footer">
-                <button className="add-to-cart-btn">Add to Cart</button>
+                <button className="add-to-cart-btn" onClick={() => {
+                  swal.fire({
+                    title: 'Yahooo!',
+                    text: `${product.name} is added to cart`,
+                    icon: 'success',
+                    confirmButtonColor: '#880808'
+                  });
+                }}>Add to Cart</button>
               </div>
             </div>
           </div>

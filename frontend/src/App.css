@@ -157,24 +157,25 @@ button:hover {
   font-style: bold;
   font-weight: 400;
   font-size: 2.7rem;
+  margin: 15px 0;
 }
 .costume-size{
-  font-family: "Spicy Rice", serif;
+  font-family: "Amarante", serif;
   font-style: bold;
   font-weight: 400;
-  font-size: 1.8rem;
+  font-size: 1.2rem;
 }
 .costume-material{
-  font-family: "Spicy Rice", serif;
+  font-family: "Amarante", serif;
   font-style: bold;
   font-weight: 400;
-  font-size: 1.8rem;
+  font-size: 1.2rem;
 }
 .costume-movie{
-  font-family: "Spicy Rice", serif;
+  font-family: "Amarante", serif;
   font-style: bold;
   font-weight: 400;
-  font-size: 1.8rem;
+  font-size: 1.2rem;
 }
 .costume-description{
   font-family: "Amarante", serif;
@@ -182,8 +183,13 @@ button:hover {
   font-style: normal;
 }
 .costume-stock{
-  font-family: "Spicy Rice", serif;
+  font-family: "Amarante", serif;
   font-style: bold;
   font-weight: 400;
-  font-size: 1.8rem;
+  font-size: 1.2rem;
+  margin-bottom: 15px;
+}
+.costume-info{
+  padding: 10px 0;
+  margin: 10px 0 auto;
 }

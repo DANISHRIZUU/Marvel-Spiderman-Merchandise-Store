@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react"
 import { Link } from "react-router-dom";
 import '../App.css'
+import swal from "sweetalert2"
 
 export default function Home() {
     const [ costumes, setCostumes] = useState([]);
+    const [ showAlert, setShowAlert] = useState(false)
 
       useEffect(() => {
     fetch("http://127.0.0.1:8000/api/costumes/") // tumhara Django endpoint
@@ -58,9 +60,22 @@ export default function Home() {
                 </p>
               </div>
               <div className="product-footer">
-                <button className="add-to-cart-btn">
+                <button className="add-to-cart-btn" onClick={() => {
+                  swal.fire({
+                    title: 'Yahooo!',
+                    text: `${costume.name} is added to cart`,
+                    icon: 'success',
+                    confirmButtonColor: "#880808"
+                  });
+                }}> 
                   Add to Cart
                 </button>
+                {showAlert && (
+                  <div className="alert alert-primary" role="alert">
+                    (`${costume.name}is Added to cart`); 
+                  </div>
+                )}
+                
               </div>
             </div>
           ))}
