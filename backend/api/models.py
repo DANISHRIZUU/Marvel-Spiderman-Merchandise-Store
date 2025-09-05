@@ -34,5 +34,10 @@ class Order_Time(models.Model):
         # get product name if exists
         product_name = self.costume.name if self.costume else "Deleted Product"
         # get order id if exists
-        order_id = self.order.id if self.order else "No Order"
+        order_id = self.order.id if self.order else "No Or der"
         return f"{ self.quantity } x { product_name } (Order: {order_id})"
+    
+class Cart(models.Model):
+    costume = models.ForeignKey(Costume, on_delete=models.SET_NULL, null=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
+    quantity = models.IntegerField(default=0)

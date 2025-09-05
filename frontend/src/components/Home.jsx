@@ -13,17 +13,43 @@ export default function Home() {
       .then((data) => setCostumes(data))
       .catch((err) => console.error("Error fetching data:", err));
   }, []);
-
-
+  
+  function handleAddToCart(productId) {
+    fetch("http://127.0.0.1:8000/api/cart/add/", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+            costume: productId,
+            order: 1,
+            quantity: 1
+        }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log("Response:", data);
+      })
+      .catch((err) => console.error("Error:",  err));
+}
     
   return (
     <>
+    
       <div className="navbar">
         <img src="/src/assets/marvel.svg" alt="Marvel Logo"/>
+        <Link to={'/cart/view'}>
+        <button className="cart-btn" onClick={() => {
+          handleAddToCart(costume.id);
+        }}>
+          <img src="./src/assets/shopping-cart-outline-svgrepo-com.svg" className="cart-img"/></button>
+          </Link>
         <h1>Spider-Man Merchandise</h1>
+        
         
       </div>
       <h2>Available Costumes</h2>
+      
       <div className="products-container">
         
 
@@ -67,6 +93,7 @@ export default function Home() {
                     icon: 'success',
                     confirmButtonColor: "#880808"
                   });
+                handleAddToCart(costume.id);
                 }}> 
                   Add to Cart
                 </button>
@@ -81,6 +108,7 @@ export default function Home() {
           ))}
         </div>
       </div>
+      
     </>
   )
 }
