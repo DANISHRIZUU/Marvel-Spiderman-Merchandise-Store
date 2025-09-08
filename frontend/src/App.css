@@ -16,7 +16,7 @@ body {
   background-color: white;
   margin: 0;
   width: 100%;
-  display: flex;
+  
   
 }
 
@@ -210,21 +210,27 @@ h2{
   margin: 10px 0 auto;
 }
 .cart-container{
-  width: 100%;
   max-width: 1200px;
   display: grid; 
-  margin-top: 100px;
+  grid-template-columns: repeat(auto-fill, 350px);
+  margin: 100px auto;
+  gap: 75px;
+  justify-content: center;
+  align-content: center;
+  align-items: center;
 }
 .cart-item{
   margin: 15px;
-  border: 1px solid black;
-  padding: 20px 10px;
   border-radius: 10px;
   text-align: center;
+  width: 350px;
+  justify-content: space-between;
+  padding: 20px;
+  
 }
 
 .cart-img{
-  width: 100px;
+  width: 100%;
   border-radius: 7px;
 }
 .buy-btn{

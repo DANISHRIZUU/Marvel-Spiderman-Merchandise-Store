@@ -21,8 +21,7 @@ export default function Home() {
             "Content-Type": "application/json",
         },
         body: JSON.stringify({
-            costume: productId,
-            order: 1,
+            costume_id: productId,
             quantity: 1
         }),
     })
@@ -37,7 +36,9 @@ export default function Home() {
     <>
     
       <div className="navbar">
+        <Link to={'/'}>
         <img src="/src/assets/marvel.svg" alt="Marvel Logo"/>
+        </Link>
         <Link to={'/cart/view'}>
         <button className="cart-btn" onClick={() => {
           handleAddToCart(costume.id);

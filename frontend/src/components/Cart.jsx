@@ -1,4 +1,4 @@
-import { data } from "react-router-dom";
+import { data, Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 
 export default function Cart() {
@@ -12,8 +12,11 @@ export default function Cart() {
     }, []);
     return (
         <>
+        
           <div className="navbar">
+            <Link to={'/'}>
             <img src="/src/assets/marvel.svg" alt="Marvel Logo" />
+            </Link>
             <h1>Spider-Man Merchandise</h1>
           </div>
           <div className="cart-container">
