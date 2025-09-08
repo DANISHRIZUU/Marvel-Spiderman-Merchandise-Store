@@ -74,7 +74,7 @@ h2{
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
   gap: 20px;
-  align-items: stretch;
+  align-items: start;
 }
 .product-card{
   border: 1px solid #ccc;
@@ -217,7 +217,7 @@ h2{
   gap: 75px;
   justify-content: center;
   align-content: center;
-  align-items: center;
+  align-items: start;
 }
 .cart-item{
   margin: 15px;
@@ -226,16 +226,22 @@ h2{
   width: 350px;
   justify-content: space-between;
   padding: 20px;
+  display: flex;
+  flex-direction: column;
   
 }
 
 .cart-img{
   width: 100%;
   border-radius: 7px;
+  
 }
 .buy-btn{
   background-color: #880808;
   color: white;
+  margin-top: auto;
+  
+  
 }
 .buy-btn:hover{
   background-color: black;

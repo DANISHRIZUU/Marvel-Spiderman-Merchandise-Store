@@ -10,6 +10,7 @@ export default function Cart() {
         .then((data) => setCart(data))
         .catch((err) => console.error("Error fetching data", err));
     }, []);
+    const total = cart ? cart.reduce((sum, item) => sum + parseFloat(item.costume.price), 0): 0
     return (
         <>
         
@@ -30,7 +31,7 @@ export default function Cart() {
                               <h4>{item.costume.name}</h4>
                             </div>
                             <div className="cart-price">
-                              <p>${item.costume.price}</p>
+                              <p>${parseInt(item.costume.price)}</p>
                             </div>
                             <button className="buy-btn">
                               Buy
@@ -40,7 +41,11 @@ export default function Cart() {
                 ))}
 
           </div>
-          <button className="buy-all-btn">Buy All</button>
+          { cart && cart.length > 0 && (
+                   <button className="buy-all-btn">Buy All <h5>Total : {"$" + total}</h5></button>           
+                            )}
+          
+          
         </>
     )
 
