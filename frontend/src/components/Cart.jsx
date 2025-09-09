@@ -10,6 +10,23 @@ export default function Cart() {
         .then((data) => setCart(data))
         .catch((err) => console.error("Error fetching data", err));
     }, []);
+    function removeFromCart(id) {
+      fetch(`http://127.0.0.1:8000/api/cart/${id}/`, {
+        method: "DELETE",
+      })
+        .then((response) => {
+          if (response.ok) {
+            console.log("product removed from cart");
+          }
+          else {
+            console.error("failed to remove item")
+          }
+
+        })
+        .catch((error) =>{
+          console.error("Error:", error)
+        });
+    }
 
     function handleOrderTaking(productId) {
       fetch("http://127.0.0.1:8000/api/order/",{
@@ -43,6 +60,9 @@ export default function Cart() {
             
                 {cart && cart.map(item => (
                     <div key={item.id} className="cart-item">
+                        <button className="delete-btn" onClick={() => {
+                          removeFromCart(item.id);
+                        }}>X</button>
                         {item.costume.image && (
                             <img className="cart-img" src={`http://127.0.0.1:8000/${item.costume.image}`} alt={item.costume.name} />
                             )}
@@ -53,7 +73,7 @@ export default function Cart() {
                               <p>${parseInt(item.costume.price)}</p>
                             </div>
                             <button className="buy-btn" onClick={() => {
-                              handleOrderTaking(costume.id);
+                              handleOrderTaking(item.id);
                             }}>
                               Buy
                             </button>

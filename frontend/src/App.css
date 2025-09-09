@@ -256,3 +256,15 @@ h2{
 .buy-all-btn:hover{
   background-color: black;
 }
+.delete-btn{
+  background-color: #880808;
+  color: white;
+  margin-bottom: 10px;
+  width: 17%;
+  border-radius:50%;
+  display: inline-block;
+  
+}
+.delete-btn:hover{
+  background-color: black;
+}

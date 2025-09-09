@@ -4,8 +4,11 @@ from django.shortcuts import get_object_or_404
 from django.http import JsonResponse
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
+from rest_framework.views import APIView
+from rest_framework import status
 from .models import Costume, Cart
 from .serializers import CartSerializer
+
 
 
 # Create your views here.
@@ -64,3 +67,13 @@ def get_cart(request):
     items = Cart.objects.all()
     serializer = CartSerializer(items, many=True)
     return Response(serializer.data)
+
+class CartDetail(APIView):
+    def delete(self, request, pk):
+        try:
+            cart_item = Cart.objects.get(pk=pk)
+            cart_item.delete()
+            return Response({"message": "item removed"}, status=status.HTTP_204_NO_CONTENT)
+        except Cart.DoesNotExist:
+            return Response({"error": "Item not found"}, status=status.HTTP_404_NO_CONTENT)
+            
