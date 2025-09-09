@@ -10,6 +10,25 @@ export default function Cart() {
         .then((data) => setCart(data))
         .catch((err) => console.error("Error fetching data", err));
     }, []);
+
+    function handleOrderTaking(productId) {
+      fetch("http://127.0.0.1:8000/api/order/",{
+        method : "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          costume_id : productId,
+          quantity: 1
+        }),
+    })
+    .then ((res) => res.json())
+    .then ((data) => {
+      console.log("Response:", data);
+    })
+    .catch((err) => console.error("Error: ", err));
+  }
+
     const total = cart ? cart.reduce((sum, item) => sum + parseFloat(item.costume.price), 0): 0
     return (
         <>
@@ -33,7 +52,9 @@ export default function Cart() {
                             <div className="cart-price">
                               <p>${parseInt(item.costume.price)}</p>
                             </div>
-                            <button className="buy-btn">
+                            <button className="buy-btn" onClick={() => {
+                              handleOrderTaking(costume.id);
+                            }}>
                               Buy
                             </button>
                     </div>

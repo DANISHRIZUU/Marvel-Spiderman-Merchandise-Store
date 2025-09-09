@@ -3,18 +3,7 @@ import { Link } from "react-router-dom";
 import '../App.css'
 import swal from "sweetalert2"
 
-export default function Home() {
-    const [ costumes, setCostumes] = useState([]);
-    const [ showAlert, setShowAlert] = useState(false)
-
-      useEffect(() => {
-    fetch("http://127.0.0.1:8000/api/costumes/") // tumhara Django endpoint
-      .then((res) => res.json())
-      .then((data) => setCostumes(data))
-      .catch((err) => console.error("Error fetching data:", err));
-  }, []);
-  
-  function handleAddToCart(productId) {
+export function handleAddToCart(productId) {
     fetch("http://127.0.0.1:8000/api/cart/add/", {
         method: "POST",
         headers: {
@@ -32,6 +21,19 @@ export default function Home() {
       .catch((err) => console.error("Error:",  err));
 }
     
+
+export default function Home() {
+    const [ costumes, setCostumes] = useState([]);
+    const [ showAlert, setShowAlert] = useState(false)
+
+      useEffect(() => {
+    fetch("http://127.0.0.1:8000/api/costumes/") // tumhara Django endpoint
+      .then((res) => res.json())
+      .then((data) => setCostumes(data))
+      .catch((err) => console.error("Error fetching data:", err));
+  }, []);
+  
+
   return (
     <>
     

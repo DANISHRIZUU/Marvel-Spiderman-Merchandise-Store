@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import '../App.css'
 import swal from "sweetalert2";
+import Home, { handleAddToCart } from "./home";
 
 export default function Product() {
   const { id } = useParams();
@@ -15,12 +16,16 @@ export default function Product() {
       .catch((err) => console.error("Error fetching data:", err));
   }, [id]);
 
+
+
   if (!product) return <p>Loading....</p>;
 
   return (
     <>
       <div className="navbar">
+        <Link to={"/"}>
         <img src="/src/assets/marvel.svg" alt="Marvel Logo" />
+        </Link>
         <h1>Spider-Man Merchandise</h1>
       </div>
 
@@ -65,6 +70,7 @@ export default function Product() {
                     icon: 'success',
                     confirmButtonColor: '#880808'
                   });
+                  handleAddToCart(product.id)
                 }}>Add to Cart</button>
               </div>
             </div>
