@@ -228,7 +228,7 @@ h2{
   padding: 20px;
   display: flex;
   flex-direction: column;
-  height: 350px;
+  height: 380px;
   
 }
 
@@ -263,7 +263,6 @@ h2{
   width: 17%;
   border-radius:50%;
   display: inline-block;
-  
 }
 .delete-btn:hover{
   background-color: black;

@@ -45,7 +45,7 @@ export default function Home() {
         <button className="cart-btn" onClick={() => {
           handleAddToCart(costume.id);
         }}>
-          <img src="./src/assets/shopping-cart-outline-svgrepo-com.svg" className="cart-img"/></button>
+          <img src="./src/assets/icons8-cart-30.svg" className="cart-img"/></button>
           </Link>
         <h1>Spider-Man Merchandise</h1>
         
