@@ -6,8 +6,8 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from rest_framework.views import APIView
 from rest_framework import status
-from .models import Costume, Cart
-from .serializers import CartSerializer
+from .models import Costume, Cart, Order_Time, Order
+from .serializers import CartSerializer, OrderTimeSerializer
 
 
 
@@ -76,4 +76,11 @@ class CartDetail(APIView):
             return Response({"message": "item removed"}, status=status.HTTP_204_NO_CONTENT)
         except Cart.DoesNotExist:
             return Response({"error": "Item not found"}, status=status.HTTP_404_NO_CONTENT)
-            
+        
+@api_view(['GET','POST'])        
+def order_taking(request):
+    serializer = OrderTimeSerializer(data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response({"message": "Transaction Successful", "data": serializer.data})
+    return Response(serializer.errors, status=400)

@@ -7,9 +7,15 @@ class CostumeSerializer(serializers.ModelSerializer):
         model = Costume
         fields = '__all__'
 class OrderTimeSerializer(serializers.ModelSerializer):
+    costume = CostumeSerializer(read_only = True)
+    costume_id = serializers.PrimaryKeyRelatedField(
+        queryset = Costume.objects.all(),
+        source = 'costume',
+        write_only = True
+    )
     class Meta:
         model = Order_Time
-        fields = ['costume', 'quantity']
+        fields = ['costume','costume_id', 'quantity']
 
 class OrderSerializer(serializers.ModelSerializer):
     items = OrderTimeSerializer(many = True, write_only=True)
@@ -22,9 +28,9 @@ class CartSerializer(serializers.ModelSerializer):
     costume = CostumeSerializer(read_only=True)
     costume_id = serializers.PrimaryKeyRelatedField(
         queryset = Costume.objects.all(),
-        source = 'costume',
+        source= 'costume',
         write_only = True
     )
     class Meta:
         model = Cart
-        fields = ['id', 'costume','costume_id', 'quantity']
+        fields = ['id','costume','costume_id', 'quantity']

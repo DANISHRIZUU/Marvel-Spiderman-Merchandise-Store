@@ -1,5 +1,6 @@
 import { data, Link } from "react-router-dom";
 import { useEffect, useState } from "react";
+import swal from "sweetalert2";
 
 export default function Cart() {
     const [cart, setCart] = useState(null)
@@ -28,14 +29,18 @@ export default function Cart() {
         });
     }
 
-    function handleOrderTaking(productId) {
+    function handleOrderTaking(item) {
+      // debugging logs
+      console.log("order item", item.costume);
+      console.log("Costume object:", item.costume);
+      console.log("costume id", item?.costume?.id)
       fetch("http://127.0.0.1:8000/api/order/",{
         method : "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          costume_id : productId,
+          costume_id : item.costume.id,
           quantity: 1
         }),
     })
@@ -73,7 +78,13 @@ export default function Cart() {
                               <p>${parseInt(item.costume.price)}</p>
                             </div>
                             <button className="buy-btn" onClick={() => {
-                              handleOrderTaking(item.id);
+                              swal.fire({
+                                title: "Transaction Successfull!🎉",
+                                text: `${item.costume.name} is on to way the to your destination, we'll reach out to you soon`,
+                                icon: 'success',
+                                confirmButtonColor: '#880808'
+                              });
+                              handleOrderTaking(item);
                             }}>
                               Buy
                             </button>
