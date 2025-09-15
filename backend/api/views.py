@@ -79,8 +79,13 @@ class CartDetail(APIView):
         
 @api_view(['GET','POST'])        
 def order_taking(request):
-    serializer = OrderTimeSerializer(data=request.data)
-    if serializer.is_valid():
-        serializer.save()
-        return Response({"message": "Transaction Successful", "data": serializer.data})
-    return Response(serializer.errors, status=400)
+    if request.method == 'POST':
+        serializer = OrderTimeSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({"message": "Transaction Successful", "data": serializer.data})
+        return Response(serializer.errors, status=400)
+    if request.method == 'GET':
+        orders = Order_Time.objects.all()
+        serializer = OrderTimeSerializer(orders, many=True)
+        return Response(serializer.data)

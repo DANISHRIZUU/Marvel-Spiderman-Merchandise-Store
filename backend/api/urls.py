@@ -11,5 +11,4 @@ urlpatterns = [
     path('cart/<int:pk>/', CartDetail.as_view(), name="cart-detail"),
     path('order/', views.order_taking, name="order_taking")
     
-    
 ]

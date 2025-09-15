@@ -40,8 +40,8 @@ export default function Cart() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          costume_id : item.costume.id,
-          quantity: 1
+          "costume_id" : item.costume.id,
+          "quantity": 1
         }),
     })
     .then ((res) => res.json())
@@ -80,7 +80,7 @@ export default function Cart() {
                             <button className="buy-btn" onClick={() => {
                               swal.fire({
                                 title: "Transaction Successfull!🎉",
-                                text: `${item.costume.name} is on to way the to your destination, we'll reach out to you soon`,
+                                text: `${item.costume.name} is on the way to your destination, we'll reach out to you soon`,
                                 icon: 'success',
                                 confirmButtonColor: '#880808'
                               });

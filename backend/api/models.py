@@ -26,16 +26,15 @@ class Order(models.Model):
 
 class Order_Time(models.Model):
     costume = models.ForeignKey(Costume, on_delete=models.SET_NULL, null=True)
-    order = models.ForeignKey(Order, on_delete=models.SET_NULL, null=True)
+    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     quantity = models.IntegerField(default=1)
     date_added = models.DateTimeField(auto_now_add=True)
     
     def __str__(self):
         # get product name if exists
-        product_name = self.costume.name if self.costume else "Deleted Product"
+        product_name = self.costume.name if self.costume else "Deleted Product" 
         # get order id if exists
-        order_id = self.order.id if self.order else "No Or der"
-        return f"{ self.quantity } x { product_name } (Order: {order_id})"
+        return f"{ self.quantity } x { product_name }"
     
 class Cart(models.Model):
     costume = models.ForeignKey(Costume, on_delete=models.SET_NULL, null=True)
