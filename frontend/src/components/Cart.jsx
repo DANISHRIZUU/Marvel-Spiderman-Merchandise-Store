@@ -28,7 +28,13 @@ export default function Cart() {
           console.error("Error:", error)
         });
     }
-
+    function handleBuyAll() {
+      if(cart) {
+        cart.forEach(item => {
+          handleOrderTaking(item)
+        })
+      }
+    }
     function handleOrderTaking(item) {
       // debugging logs
       console.log("order item", item.costume);
@@ -94,7 +100,15 @@ export default function Cart() {
 
           </div>
           { cart && cart.length > 0 && (
-                   <button className="buy-all-btn">Buy All <h5>Total : {"$" + total}</h5></button>           
+                   <button className="buy-all-btn" onClick={() => {
+                    swal.fire({
+                      title: "Transaction Successful of All Items!🎉",
+                      icon: "success",
+                      confirmButtonColor: '#880808'
+                    });
+                    handleBuyAll();
+                   }}>                    Buy All
+                  <h5>Total : {"$" + total}</h5></button>           
                             )}
           
           
