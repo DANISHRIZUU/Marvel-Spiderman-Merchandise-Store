@@ -51,7 +51,7 @@ export default function Home() {
         
         
       </div>
-      <h2>Available Costumes</h2>
+      
       
       <div className="products-container">
         

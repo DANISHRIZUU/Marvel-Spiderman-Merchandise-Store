@@ -7,6 +7,7 @@ import NotesList from './components/NotesList'
 import Home from './components/Home'
 import Product from './components/Product'
 import Cart from './components/Cart'
+import Login from './components/Login'
 import { Routes, Route } from 'react-router-dom'
 
 function App() {
@@ -15,7 +16,8 @@ function App() {
   return (
     
       <Routes>
-        <Route path='/' element={<Home/>}  />
+        <Route path='/' element={<Home/>}/>
+        <Route path='/home' element={<Login/>}  />
         <Route path='/product/:id' element={<Product/>}></Route>
         <Route path='cart/view' element={<Cart/>}></Route>
       </Routes>
