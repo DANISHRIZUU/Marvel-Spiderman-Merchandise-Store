@@ -16,11 +16,27 @@ h3{
   font-size: large;
   margin-top: 5px;
 }
+h4{
+  font-size: larger;
+}
+h5{
+  color: #ffffff;
+  font-size: larger;
+  font-family: "DynaPuff", system-ui;
+  font-optical-sizing: auto;
+  font-weight: 600;
+  font-style: normal;
+  font-variation-settings:
+    "wdth" 100;
+}
+.cart-product-name{
+  margin-top: 7px;
+}
 body {
   background-color: white;
   margin: 0;
   width: 100%;
-  
+  height: 100%;
   
 }
 
@@ -61,11 +77,11 @@ body {
 
 .products-container {
   position: absolute;
-  margin-top: 60px;
+  top: 200px;
   width: 100%;
   max-width: 1200px;
-  margin: 0 auto;    /* page ke beech mai container */
-  padding: 20px;
+
+
   
   
 }
@@ -164,6 +180,9 @@ body {
   box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
 }
 .costume-container{
+  position: absolute;
+  top: 100px;
+  left: 150px;
   display: flex;
   align-items: center;
   align-content: center;
@@ -172,7 +191,7 @@ body {
   max-width: 1200px;
   margin: 0 auto;    /* page ke beech mai container */
   padding: 20px;
-  height: 100%;
+  height: auto;
 }
 .costume-name{
   font-family: "Spicy Rice", serif;
@@ -231,7 +250,7 @@ body {
   align-items: start;
 }
 .cart-item{
-  margin: 15px;
+  margin: 10px 35px;
   border-radius: 10px;
   text-align: center;
   width: 350px;
@@ -239,7 +258,7 @@ body {
   padding: 20px;
   display: flex;
   flex-direction: column;
-  height: 380px;
+  height: 440px;
   
 }
 
@@ -277,4 +296,27 @@ body {
 }
 .delete-btn:hover{
   background-color: black;
+}
+.login-container{
+  display: flex;
+  height: 100vh;           
+  width: 100%;             
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;    
+  background: url('/src/assets/marvels-spider-man-2-review_he96.jpg')
+              no-repeat center center/cover; 
+  background-size: cover;
+  background-position-x: center;
+  top: 0px;
+  position: absolute;
+  
+}
+.login-box{
+  background: rgba(255, 255, 255, 0, 85);
+  padding: 30px; 
+  border-radius: 12px;
+  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.5);
+  text-align: center;
+  
 }

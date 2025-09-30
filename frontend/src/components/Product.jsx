@@ -29,7 +29,7 @@ export default function Product() {
         <h1>Spider-Man Merchandise</h1>
       </div>
 
-      <h2>Product Details</h2>
+      
 
       <div className="costume-container">
         <div className="costume-grid">
