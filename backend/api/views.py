@@ -2,12 +2,14 @@ from urllib import request
 from django.shortcuts import render
 from django.shortcuts import get_object_or_404
 from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from rest_framework.views import APIView
 from rest_framework import status
 from .models import Costume, Cart, Order_Time, Order
 from .serializers import CartSerializer, OrderTimeSerializer
+import json
 
 
 
@@ -89,3 +91,15 @@ def order_taking(request):
         orders = Order_Time.objects.all()
         serializer = OrderTimeSerializer(orders, many=True)
         return Response(serializer.data)
+@csrf_exempt
+def login(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        username = data.get('username')
+        password = data.get('password')
+        print(username)
+        print(password)
+
+        return JsonResponse({"message": "Login request recieved", "username": username, "password": password})
+    else:
+        return JsonResponse({"error": "only post method allowed"}, 405)
