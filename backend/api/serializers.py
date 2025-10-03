@@ -1,6 +1,12 @@
 from rest_framework import serializers
 
 from .models import Costume, Order, Order_Time, Cart
+from django.contrib.auth.models import User
+
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = '__all__'
 
 class CostumeSerializer(serializers.ModelSerializer):
     class Meta:
