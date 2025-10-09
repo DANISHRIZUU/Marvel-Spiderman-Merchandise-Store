@@ -8,6 +8,7 @@ import Home from './components/Home'
 import Product from './components/Product'
 import Cart from './components/Cart'
 import Login from './components/Login'
+import Register from './components/Register'
 import { Routes, Route } from 'react-router-dom'
 
 function App() {
@@ -17,6 +18,7 @@ function App() {
     
       <Routes>
         <Route path='/' element={<Home/>}/>
+        <Route path='/register' element={<Register/>} />
         <Route path='/login' element={<Login/>}  />
         <Route path='/product/:id' element={<Product/>}></Route>
         <Route path='cart/view' element={<Cart/>}></Route>

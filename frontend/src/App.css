@@ -310,7 +310,19 @@ body {
   background-position-x: center;
   top: 0px;
   position: absolute;
-  
+}
+.register-container{
+  display: flex;
+  height: 100vh;
+  width: 100%;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: url('/src/assets/marvels-spider-man-2-review_he96.jpg') no-repeat center center/cover;
+  background-size: cover;
+  background-position-x: center;
+  top: 0px;
+  position: absolute;
 }
 .login-box{
   background: rgba(255, 255, 255, 0, 85);
@@ -318,5 +330,19 @@ body {
   border-radius: 12px;
   box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.5);
   text-align: center;
-  
+}
+.register-box{
+  background: rgba(255, 255, 255, 0, 85);
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.5);
+  text-align: center;
+}
+
+h6{
+  font-size: ;
+  color: #fff;
+}
+img{
+  background: transparent;
 }

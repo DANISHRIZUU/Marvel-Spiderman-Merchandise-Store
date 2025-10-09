@@ -45,6 +45,7 @@ export default function Cart() {
         headers: {
           "Content-Type": "application/json",
         },
+        credentials: "include",
         body: JSON.stringify({
           "costume_id" : item.costume.id,
           "quantity": 1

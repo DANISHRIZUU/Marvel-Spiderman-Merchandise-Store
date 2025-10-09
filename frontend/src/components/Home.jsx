@@ -9,6 +9,7 @@ export function handleAddToCart(productId) {
         headers: {
             "Content-Type": "application/json",
         },
+        credentials: "include",
         body: JSON.stringify({
             costume_id: productId,
             quantity: 1
@@ -41,6 +42,7 @@ export default function Home() {
         <Link to={'/'}>
         <img src="/src/assets/marvel.svg" alt="Marvel Logo"/>
         </Link>
+        
         <Link to={'/cart/view'}>
         <button className="cart-btn" onClick={() => {
           handleAddToCart(costume.id);
