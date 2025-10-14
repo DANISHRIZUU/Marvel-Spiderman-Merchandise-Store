@@ -1,7 +1,7 @@
 import '../App.css'
 import { useState } from 'react'
 export default function Register() {
-
+    
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [confirmpassword, setConfirmPassword] = useState("");
@@ -15,10 +15,12 @@ export default function Register() {
             return;
         }
         try {
-            const response = await fetch("http://127.0.0.1:8000/api/register/", {
+            const response = await fetch("http://127.0.0.1:8000/api/user/register/", {
                 method: "POST",
-                headers: { "content-type": "application/json" },
-                body: JSON.stringify({ username, password })
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({username,password}),
             });
 
             if (response.ok) {

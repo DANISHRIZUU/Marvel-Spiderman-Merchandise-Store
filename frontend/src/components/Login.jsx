@@ -1,46 +1,48 @@
-import { Link, useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 import '../App.css'
-import { useState } from "react"
-export default function Login() {
 
+export default function Login() {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
+    const [message, setMessage] = useState("");
 
-    const handleSubmit = async (event) => {
+    const handleLogin = async (event) => {
         event.preventDefault();
-        const response = await fetch("http://127.0.0.1:8000/api/login/", {
-            method: 'POST',
-            headers: {"content-type" : "application/json"},
-            body: JSON.stringify({username, password}),
-            credentials: 'include'
-        });
-        const data = await response.json();
-            if(data.success) {
-                useNavigate("/home");
-            } else {
-                alert(data.message);
-            }
-        };
-        
-        
-    }
+    
+    try{
+       const res = await fetch("http://127.0.0.1:8000/api/token/", {
+        method: "POST",
+        headers: { "Content-Type": "application/json"},
+        body: JSON.stringify({username, password}),
+       });
+       const data = await res.json()
+
+       if (res.ok) {
+        // Save tokens
+        localStorage.setItem("access", data.access);
+        localStorage.setItem("refresh", data.refresh);
+        setMessage("Login Successfull, Token Saved");
+       } else {
+        setMessage("Invalid Username or Password")
+       } 
+    }catch(error) {
+        setMessage("Network Error")
+       }
+    };
 
     return(
         <>
-        <form  onSubmit={handleSubmit} >
+        <form onSubmit={handleLogin} method='post'>
             <div className='login-container'>
                 <div className='login-box'>
                     <h5>Login</h5>
                     <div className='form-group'>
-                        <input type='text' onChange={(e) => setUsername(e.target.value)} autoFocus className='form-control' value={username} placeholder='Username' name='username'/>
+                        <input autoFocus className='form-control' type='text' placeholder='Username' value={username} onChange={(e) => setUsername(e.target.value)} name='username'/>
                     </div>
                     <div className='form-group'>
-                        <input autoFocus className='form-control' type='password' onChange={(e) => setPassword(e.target.value)} value={password} placeholder='Password' name='password'/>
+                        <input autoFocus className='form-control' type='password' placeholder='Password' onChange={(e) => setPassword(e.target.value)} value={password} name='password'/>
                     </div>
                     <input className='btn btn-primary' type='submit' value="Login"/>
-                    <Link to={"/"}>
-                    <button className='btn btn-primary' type='submit' value="Home"/>
-                    </Link>
                 </div>
             </div>
         </form>

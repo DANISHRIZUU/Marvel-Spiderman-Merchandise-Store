@@ -1,15 +1,15 @@
 from urllib import request
 from django.shortcuts import render
+from django.contrib.auth.models import User
+from rest_framework import generics
+from .serializers import UserSerializer
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from django.shortcuts import get_object_or_404
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
-from django.contrib.auth.decorators import login_required
 from django.db import IntegrityError
-from django.contrib.auth import authenticate, login, logout
-from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated
-from rest_framework.decorators import api_view, permission_classes, authentication_classes
+from rest_framework.decorators import api_view
 from rest_framework.views import APIView
 from rest_framework import status
 from .models import Costume, Cart, Order_Time, Order, User
@@ -19,6 +19,11 @@ import json
 
 
 # Create your views here.
+
+class CreateUserView(generics.CreateAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    permission_classes = [AllowAny]
 
 def hello(request):
     return JsonResponse({"message": "Welcome to SpiderMan Merchandise"})
@@ -61,22 +66,17 @@ def view_product(request, product_id):
     }
     return Response(data)
 
-
-
 @api_view(['POST'])
 def add_to_cart(request):
-    data = request.data.copy()
-    data['user'] = request.user.id
-    serializer = CartSerializer(data=data)
+    serializer = CartSerializer(data=request.data)
     if serializer.is_valid():
         serializer.save()
         return Response({"message" : "Product added to cart", "data": serializer.data})
     return Response(serializer.errors, status = 400)
 
-
 @api_view(['GET'])
 def get_cart(request):
-    items = Cart.objects.filter(user=request.user)
+    items = Cart.objects.all()
     serializer = CartSerializer(items, many=True)
     return Response(serializer.data)
 
@@ -89,8 +89,6 @@ class CartDetail(APIView):
         except Cart.DoesNotExist:
             return Response({"error": "Item not found"}, status=status.HTTP_404_NO_CONTENT)
         
-@permission_classes([IsAuthenticated])
-@authentication_classes({})      
 @api_view(['GET','POST'])        
 def order_taking(request):
     if request.method == 'POST':
@@ -103,7 +101,18 @@ def order_taking(request):
         orders = Order_Time.objects.all()
         serializer = OrderTimeSerializer(orders, many=True)
         return Response(serializer.data)
+@csrf_exempt
+def login_view(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        username = data.get('username')
+        password = data.get('password')
+        print(username)
+        print(password)
 
+        return JsonResponse({"message": "Login request recieved", "username": username, "password": password})
+    else:
+        return JsonResponse({"error": "only post method allowed"}, 405)
 @csrf_exempt
 @api_view(['GET', 'POST'])
 def register(request):
@@ -128,23 +137,6 @@ def register(request):
         serializer = UserSerializer(users, many=True)
         return Response(serializer.data)
         
-@csrf_exempt
-@permission_classes([AllowAny])
-@api_view(['GET', 'POST'])
-def login_view(request):
-    if request.method == 'POST':
-        data = json.loads(request.body)
-        username = data.get('username')
-        password = data.get('password')
-        user = authenticate(request, username=username, password=password)
-        if user is not None:
-            login(request, user)
-            print({"success": True, "message": "Login successful", "user": request.user.username})
-            return JsonResponse({"success": True, "message": "Login successful", "user": request.user.username})
-        else:
-            print({"success": False, "message": "Invalid username or password", "message": "Only Post method allowed"})
-            return JsonResponse({"success": False, "message": "Invalid username or password", "message": "Only Post method allowed"}, status=401)
-    else:
-        return JsonResponse({"message": "Only Post method allowed"})
+    
 
     
