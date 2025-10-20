@@ -4,10 +4,18 @@ import '../App.css'
 import swal from "sweetalert2"
 
 export function handleAddToCart(productId) {
+    const token = localStorage.getItem("access");
+
+    if(!token) {
+      alert("Please Login to add items in your cart")
+      return;
+    }
+
     fetch("http://127.0.0.1:8000/api/cart/add/", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`
         },
         credentials: "include",
         body: JSON.stringify({
@@ -42,7 +50,12 @@ export default function Home() {
         <Link to={'/'}>
         <img src="/src/assets/marvel.svg" alt="Marvel Logo"/>
         </Link>
-        
+        <Link to={'/login'}>
+        <button className="login-btn">Login</button>
+        </Link>
+        <Link to={'/register'}>
+        <button className="register-btn">Register</button>
+        </Link>
         <Link to={'/cart/view'}>
         <button className="cart-btn" onClick={() => {
           handleAddToCart(costume.id);
@@ -107,10 +120,13 @@ export default function Home() {
                     (`${costume.name}is Added to cart`); 
                   </div>
                 )}
-                
               </div>
             </div>
           ))}
+          <div className="funko-poster">
+            <img className="funko-page" src="/src/assets/marvels-spider-man-2-review_he96.jpg"/>
+            <img className="funko-icon" src="/on/demandware.static/Sites-FunkoUS-Site/-/default/dw177007c5/images/funko/svg/site-logo.svg"/>
+          </div>
         </div>
       </div>
       

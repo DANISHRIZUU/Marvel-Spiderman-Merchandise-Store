@@ -1,7 +1,8 @@
 import '../App.css'
+import { useNavigate } from 'react-router-dom';
 import { useState } from 'react'
 export default function Register() {
-    
+    const navigate = useNavigate("")
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [confirmpassword, setConfirmPassword] = useState("");
@@ -25,6 +26,8 @@ export default function Register() {
 
             if (response.ok) {
                 setMessage("✅ User account created!");
+                navigate("/login")
+                
             } else {
                 setMessage("❌ Error creating account!");
             }

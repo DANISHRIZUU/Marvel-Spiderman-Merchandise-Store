@@ -3,6 +3,41 @@
     padding: 0;
     box-sizing: border-box;
 }
+.login-btn{
+  position: absolute;
+  top: 50px;
+  left: 140px;
+  color: white;
+  background: transparent;
+  width: 10px;
+  background-color: #880808;
+  font-family: "DynaPuff", system-ui;
+  outline: none;
+  border: none;
+}
+.register-btn{
+  outline: none;
+  border: none;
+  position: absolute;
+  top: 50px;
+  left: 220px;
+  color: white;
+  background-color: #880808;
+  font-family: "DynaPuff", system-ui;
+  width: 10px;
+}
+.cart-btn:focus, .login-btn:focus, .register-btn:focus{
+  outline: none;
+  border: none;
+}
+.register-box:hover{
+  outline: none;
+  border: none;
+}
+.login-btn:hover{
+  outline: none;
+  border: none;
+}
 h1 {
   color: white;
   font-family: "DynaPuff", system-ui;
@@ -59,12 +94,12 @@ body {
   justify-content: space-between;
   align-items: center;
   padding: 15px 30px;
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   z-index: 1000;
   border-radius: 10px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5); 
+  
 }
 .navbar img {
   background: transparent;
@@ -76,18 +111,17 @@ body {
   
 
 .products-container {
-  position: absolute;
-  top: 200px;
+  margin-top: 150px;
   width: 100%;
   max-width: 1200px;
-
+  margin-left: auto;
+  margin-right: auto;
+  padding: 20px;
 
   
   
 }
 .products-grid {
-  position: absolute;
-  top: 0px;
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
   gap: 20px;
@@ -345,4 +379,20 @@ h6{
 }
 img{
   background: transparent;
+}
+.funko-page{
+  border-radius: 10px;
+  object-fit: cover;
+  width: 90%;
+  max-width: 1000px;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+}
+.funko-poster{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 100px 0;
 }

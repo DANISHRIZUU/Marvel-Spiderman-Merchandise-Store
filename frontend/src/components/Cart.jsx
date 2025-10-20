@@ -1,22 +1,58 @@
-import { data, Link } from "react-router-dom";
+import { useNavigate, data, Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import swal from "sweetalert2";
 
 export default function Cart() {
+    const navigate = useNavigate();
     const [cart, setCart] = useState(null)
 
     useEffect(() => {
-        fetch('http://127.0.0.1:8000/api/cart/')
-        .then((res) => res.json())
+      const token = localStorage.getItem("access");
+      if (!token) {
+        swal.fire({
+          title: "Please login first!",
+          text: "You must be logged in to view your cart",
+          icon: "warning",
+          confirmButtonColor: '#880808'
+        });
+        return;
+      }
+        fetch('http://127.0.0.1:8000/api/cart/', {
+          headers: {
+            "Authorization": `Bearer ${token}`,
+            "Content-Type": "application/json"
+          }
+        })
+        .then((res) => {
+          if(res.status == 401) {
+            swal.fire({
+              title: "Login Required",
+              text: "Please login to access your cart",
+              icon: "warning",
+              confirmButtonColor: "#880808"
+            }).then(() => {
+              navigate("/");
+            });
+            setCart([]);
+            return [];
+          }
+          return res.json();
+        })
         .then((data) => setCart(data))
         .catch((err) => console.error("Error fetching data", err));
     }, []);
     function removeFromCart(id) {
+      const token = localStorage.getItem("access");
       fetch(`http://127.0.0.1:8000/api/cart/${id}/`, {
         method: "DELETE",
+        headers: {
+          "Authorization": `Bearer ${token}`,
+          "Content-Type": "application/json"
+        }
       })
         .then((response) => {
           if (response.ok) {
+            setCart(prev => prev.filter(item => item.id !== id));
             console.log("product removed from cart");
           }
           else {

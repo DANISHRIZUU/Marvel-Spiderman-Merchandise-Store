@@ -1,10 +1,13 @@
 import { useState } from 'react';
 import '../App.css'
+import { useNavigate } from 'react-router-dom' 
+import { Link } from 'react-router-dom';
 
 export default function Login() {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
-    const [message, setMessage] = useState("");
+    const [message, setMessage] = useState("") ;
+    const navigate = useNavigate();
 
     const handleLogin = async (event) => {
         event.preventDefault();
@@ -16,12 +19,12 @@ export default function Login() {
         body: JSON.stringify({username, password}),
        });
        const data = await res.json()
-
        if (res.ok) {
         // Save tokens
         localStorage.setItem("access", data.access);
         localStorage.setItem("refresh", data.refresh);
         setMessage("Login Successfull, Token Saved");
+        navigate("/")
        } else {
         setMessage("Invalid Username or Password")
        } 
@@ -43,6 +46,7 @@ export default function Login() {
                         <input autoFocus className='form-control' type='password' placeholder='Password' onChange={(e) => setPassword(e.target.value)} value={password} name='password'/>
                     </div>
                     <input className='btn btn-primary' type='submit' value="Login"/>
+                    {message && <h6>{message}</h6>}
                 </div>
             </div>
         </form>
