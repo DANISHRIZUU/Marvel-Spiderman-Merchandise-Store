@@ -15,6 +15,26 @@
   outline: none;
   border: none;
 }
+.logout-btn{
+  position:absolute;
+  top: 50px;
+  left: 320px;
+  color: white;
+  background: transparent;
+  width: 10px;
+  background-color: #880808;
+  font-family: "DynaPuff", system-ui;
+  outline: none;
+  border: none;
+}
+.logout-btn:hover{
+  outline: none;
+  border: none;
+}
+.logout-btn:focus{
+  outline: none;
+  border: none;
+}
 .register-btn{
   outline: none;
   border: none;

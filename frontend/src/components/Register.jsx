@@ -26,7 +26,9 @@ export default function Register() {
 
             if (response.ok) {
                 setMessage("✅ User account created!");
-                navigate("/login")
+                setTimeout(() => {
+                    navigate("/login")
+                }, 2000);
                 
             } else {
                 setMessage("❌ Error creating account!");

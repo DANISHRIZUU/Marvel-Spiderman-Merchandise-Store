@@ -1,8 +1,11 @@
 from urllib import request
 from django.shortcuts import render
+from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
 from rest_framework import generics
 from .serializers import UserSerializer
+from rest_framework_simplejwt.authentication import JWTAuthentication
+from rest_framework.decorators import authentication_classes, permission_classes
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from django.shortcuts import get_object_or_404
 from django.http import JsonResponse
@@ -29,6 +32,7 @@ def hello(request):
     return JsonResponse({"message": "Welcome to SpiderMan Merchandise"})
 
 @api_view(['GET'])
+@permission_classes([AllowAny])
 def get_costumes(request):
     costumes = Costume.objects.all()
     # data ko json ready format mai convert karo \
@@ -49,6 +53,7 @@ def get_costumes(request):
         }) 
     return Response(data)
 @api_view(['GET'])
+@permission_classes([AllowAny])
 def view_product(request, product_id):
     costume = get_object_or_404(Costume, id=product_id)
 
@@ -67,16 +72,20 @@ def view_product(request, product_id):
     return Response(data)
 
 @api_view(['POST'])
+@authentication_classes([JWTAuthentication])
+@permission_classes([IsAuthenticated])
 def add_to_cart(request):
     serializer = CartSerializer(data=request.data)
     if serializer.is_valid():
-        serializer.save()
+        serializer.save(user=request.user)
         return Response({"message" : "Product added to cart", "data": serializer.data})
     return Response(serializer.errors, status = 400)
 
 @api_view(['GET'])
+@authentication_classes([JWTAuthentication])
+@permission_classes([IsAuthenticated])
 def get_cart(request):
-    items = Cart.objects.all()
+    items = Cart.objects.filter(user=request.user)
     serializer = CartSerializer(items, many=True)
     return Response(serializer.data)
 
@@ -88,7 +97,9 @@ class CartDetail(APIView):
             return Response({"message": "item removed"}, status=status.HTTP_204_NO_CONTENT)
         except Cart.DoesNotExist:
             return Response({"error": "Item not found"}, status=status.HTTP_404_NO_CONTENT)
-        
+
+@authentication_classes([JWTAuthentication])
+@permission_classes([IsAuthenticated])
 @api_view(['GET','POST'])        
 def order_taking(request):
     if request.method == 'POST':
@@ -101,6 +112,7 @@ def order_taking(request):
         orders = Order_Time.objects.all()
         serializer = OrderTimeSerializer(orders, many=True)
         return Response(serializer.data)
+@permission_classes([AllowAny])
 @csrf_exempt
 def login_view(request):
     if request.method == 'POST':
@@ -110,11 +122,15 @@ def login_view(request):
         print(username)
         print(password)
 
+        user = authenticate(username=username, password=password)
+        if user is not None:
+            login(request,user)
         return JsonResponse({"message": "Login request recieved", "username": username, "password": password})
     else:
         return JsonResponse({"error": "only post method allowed"}, 405)
 @csrf_exempt
 @api_view(['GET', 'POST'])
+@permission_classes([AllowAny])
 def register(request):
     if request.method == 'POST':
         print("RAW BODY: ", request.body)

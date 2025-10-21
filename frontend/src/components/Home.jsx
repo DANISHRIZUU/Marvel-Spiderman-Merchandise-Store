@@ -56,6 +56,9 @@ export default function Home() {
         <Link to={'/register'}>
         <button className="register-btn">Register</button>
         </Link>
+        <button className="logout-btn" onClick={() => {
+          localStorage.removeItem('access');
+        }}>Logout</button>
         <Link to={'/cart/view'}>
         <button className="cart-btn" onClick={() => {
           handleAddToCart(costume.id);
