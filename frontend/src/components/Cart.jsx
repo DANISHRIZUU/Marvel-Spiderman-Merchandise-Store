@@ -15,6 +15,7 @@ export default function Cart() {
           icon: "warning",
           confirmButtonColor: '#880808'
         });
+        navigate("/")
         return;
       }
         fetch('http://127.0.0.1:8000/api/cart/', {

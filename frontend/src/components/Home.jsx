@@ -126,10 +126,7 @@ export default function Home() {
               </div>
             </div>
           ))}
-          <div className="funko-poster">
-            <img className="funko-page" src="/src/assets/marvels-spider-man-2-review_he96.jpg"/>
-            <img className="funko-icon" src="/on/demandware.static/Sites-FunkoUS-Site/-/default/dw177007c5/images/funko/svg/site-logo.svg"/>
-          </div>
+          
         </div>
       </div>
       
