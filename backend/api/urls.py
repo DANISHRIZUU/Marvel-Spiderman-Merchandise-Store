@@ -11,6 +11,7 @@ urlpatterns = [
     path('cart/<int:pk>/', CartDetail.as_view(), name="cart-detail"),
     path('order/', views.order_taking, name="order_taking"),
     path('login/', views.login_view, name='login'),
-    path('register/', views.register, name='register')
+    path('register/', views.register, name='register'),
+    path('funko/', views.get_funko, name='funko')
     
 ]

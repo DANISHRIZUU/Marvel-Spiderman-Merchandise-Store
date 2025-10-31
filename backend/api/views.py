@@ -15,8 +15,8 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from rest_framework.views import APIView
 from rest_framework import status
-from .models import Costume, Cart, Order_Time, Order, User
-from .serializers import CartSerializer, OrderTimeSerializer, UserSerializer
+from .models import Costume, Cart, Order_Time, Order, User, Funko
+from .serializers import CartSerializer, OrderTimeSerializer, UserSerializer, FunkoSerializer
 import json
 
 
@@ -52,6 +52,15 @@ def get_costumes(request):
 
         }) 
     return Response(data)
+
+@api_view(['GET'])
+@permission_classes([AllowAny])
+def get_funko(request):
+    funkos = Funko.objects.all()
+    serializer = FunkoSerializer(funkos, many=True)
+    return Response(serializer.data)
+
+
 @api_view(['GET'])
 @permission_classes([AllowAny])
 def view_product(request, product_id):

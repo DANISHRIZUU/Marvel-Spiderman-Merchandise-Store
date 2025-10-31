@@ -1,13 +1,35 @@
 import { useEffect, useState } from "react"
-import { Link } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import '../App.css'
 import swal from "sweetalert2"
 
-export function handleAddToCart(productId) {
-    const token = localStorage.getItem("access");
 
+
+export default function Home() {
+    const [ costumes, setCostumes] = useState([]);
+    const [ showAlert, setShowAlert] = useState(false)
+    const navigate = useNavigate();
+
+      useEffect(() => {
+    fetch("http://127.0.0.1:8000/api/costumes/") // tumhara Django endpoint
+      .then((res) => res.json())
+      .then((data) => setCostumes(data))
+      .catch((err) => console.error("Error fetching data:", err));
+  }, []);
+  
+const handleAddToCart =(productId, productName) => {
+    
+    const token = localStorage.getItem("access");
+    
     if(!token) {
-      alert("Please Login to add items in your cart")
+      swal.fire({
+        title: "Login Required",
+        icon: "warning",
+        text: "Login To Add Items In Your Cart",
+        confirmButtonColor: "#880808"
+      }).then(() => {
+        navigate("/")
+      });
       return;
     }
 
@@ -23,26 +45,37 @@ export function handleAddToCart(productId) {
             quantity: 1
         }),
     })
-      .then((res) => res.json())
+      .then((res) => {
+        if(res.status == 401) {
+          swal.fire({
+            title: "Login Required",
+            icon: "warning",
+            text: "Login to add items in your cart",
+            confirmButtonColor: "#880808"
+          }).then(() => {
+            navigate("/")
+          });
+        
+          return null;
+                 
+        }
+        return res.json();
+      })
       .then((data) => {
+        if(data) {
+          swal.fire({
+                    title: 'Yahooo!',
+                    text: `${productName} is added to cart`,
+                    icon: 'success',
+                    confirmButtonColor: "#880808"
+                  });
         console.log("Response:", data);
+        }
+        
       })
       .catch((err) => console.error("Error:",  err));
 }
     
-
-export default function Home() {
-    const [ costumes, setCostumes] = useState([]);
-    const [ showAlert, setShowAlert] = useState(false)
-
-      useEffect(() => {
-    fetch("http://127.0.0.1:8000/api/costumes/") // tumhara Django endpoint
-      .then((res) => res.json())
-      .then((data) => setCostumes(data))
-      .catch((err) => console.error("Error fetching data:", err));
-  }, []);
-  
-
   return (
     <>
     
@@ -60,9 +93,7 @@ export default function Home() {
           localStorage.removeItem('access');
         }}>Logout</button>
         <Link to={'/cart/view'}>
-        <button className="cart-btn" onClick={() => {
-          handleAddToCart(costume.id);
-        }}>
+        <button className="cart-btn">
           <img src="./src/assets/icons8-cart-30.svg" className="cart-img"/></button>
           </Link>
         <h1>Spider-Man Merchandise</h1>
@@ -108,13 +139,7 @@ export default function Home() {
               </div>
               <div className="product-footer">
                 <button className="add-to-cart-btn" onClick={() => {
-                  swal.fire({
-                    title: 'Yahooo!',
-                    text: `${costume.name} is added to cart`,
-                    icon: 'success',
-                    confirmButtonColor: "#880808"
-                  });
-                handleAddToCart(costume.id);
+                handleAddToCart(costume.id, costume.name);
                 }}> 
                   Add to Cart
                 </button>
@@ -127,6 +152,16 @@ export default function Home() {
             </div>
           ))}
           
+        </div>
+        <div className='funko-poster'>
+          <img className='poster-img' src='/src/assets/marvels-spider-man-2-review_he96.jpg'/>
+          <div className="overlay">
+            <img className="funko-logo" src="https://funko.com/on/demandware.static/Sites-FunkoUS-Site/-/default/dw177007c5/images/funko/svg/site-logo.svg"/>
+            <Link to={'/funko'}>
+            <button className="shopnow-btn">Shop Now</button>
+            </Link>
+          </div>
+                
         </div>
       </div>
       

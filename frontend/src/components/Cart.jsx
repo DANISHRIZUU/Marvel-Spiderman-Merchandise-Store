@@ -3,154 +3,162 @@ import { useEffect, useState } from "react";
 import swal from "sweetalert2";
 
 export default function Cart() {
-    const navigate = useNavigate();
-    const [cart, setCart] = useState(null)
+  const navigate = useNavigate();
+  const [cart, setCart] = useState(null)
 
-    useEffect(() => {
-      const token = localStorage.getItem("access");
-      if (!token) {
-        swal.fire({
-          title: "Please login first!",
-          text: "You must be logged in to view your cart",
-          icon: "warning",
-          confirmButtonColor: '#880808'
-        });
-        navigate("/")
-        return;
+  useEffect(() => {
+    const token = localStorage.getItem("access");
+    if (!token) {
+      swal.fire({
+        title: "Please login first!",
+        text: "You must be logged in to view your cart",
+        icon: "warning",
+        confirmButtonColor: '#880808'
+      });
+      navigate("/")
+      return;
+    }
+    fetch('http://127.0.0.1:8000/api/cart/', {
+      headers: {
+        "Authorization": `Bearer ${token}`,
+        "Content-Type": "application/json"
       }
-        fetch('http://127.0.0.1:8000/api/cart/', {
-          headers: {
-            "Authorization": `Bearer ${token}`,
-            "Content-Type": "application/json"
-          }
-        })
-        .then((res) => {
-          if(res.status == 401) {
-            swal.fire({
-              title: "Login Required",
-              text: "Please login to access your cart",
-              icon: "warning",
-              confirmButtonColor: "#880808"
-            }).then(() => {
-              navigate("/");
-            });
-            setCart([]);
-            return [];
-          }
-          return res.json();
-        })
-        .then((data) => setCart(data))
-        .catch((err) => console.error("Error fetching data", err));
-    }, []);
-    function removeFromCart(id) {
-      const token = localStorage.getItem("access");
-      fetch(`http://127.0.0.1:8000/api/cart/${id}/`, {
-        method: "DELETE",
-        headers: {
-          "Authorization": `Bearer ${token}`,
-          "Content-Type": "application/json"
+    })
+      .then((res) => {
+        if (res.status == 401) {
+          swal.fire({
+            title: "Login Required",
+            text: "Please login to access your cart",
+            icon: "warning",
+            confirmButtonColor: "#880808"
+          }).then(() => {
+            navigate("/");
+          });
+          setCart([]);
+          return [];
         }
+        return res.json();
       })
-        .then((response) => {
-          if (response.ok) {
-            setCart(prev => prev.filter(item => item.id !== id));
-            console.log("product removed from cart");
-          }
-          else {
-            console.error("failed to remove item")
-          }
-
-        })
-        .catch((error) =>{
-          console.error("Error:", error)
-        });
-    }
-    function handleBuyAll() {
-      if(cart) {
-        cart.forEach(item => {
-          handleOrderTaking(item)
-        })
+      .then((data) => setCart(data))
+      .catch((err) => console.error("Error fetching data", err));
+  }, []);
+  function removeFromCart(id) {
+    const token = localStorage.getItem("access");
+    fetch(`http://127.0.0.1:8000/api/cart/${id}/`, {
+      method: "DELETE",
+      headers: {
+        "Authorization": `Bearer ${token}`,
+        "Content-Type": "application/json"
       }
+    })
+      .then((response) => {
+        if (response.ok) {
+          setCart(prev => prev.filter(item => item.id !== id));
+          console.log("product removed from cart");
+        }
+        else {
+          console.error("failed to remove item")
+        }
+
+      })
+      .catch((error) => {
+        console.error("Error:", error)
+      });
+  }
+  function handleBuyAll() {
+    if (cart) {
+      cart.forEach(item => {
+        handleOrderTaking(item)
+      })
     }
-    function handleOrderTaking(item) {
-      // debugging logs
-      console.log("order item", item.costume);
-      console.log("Costume object:", item.costume);
-      console.log("costume id", item?.costume?.id)
-      fetch("http://127.0.0.1:8000/api/order/",{
-        method : "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
-        body: JSON.stringify({
-          "costume_id" : item.costume.id,
-          "quantity": 1
-        }),
+  }
+  function handleOrderTaking(item) {
+    const product = item.costume || item.funko;
+    if (!product) return null;
+    // debugging logs
+    console.log("order item", item.costume);
+    console.log("Costume object:", item.costume);
+    console.log("costume id", item?.costume?.id)
+    fetch("http://127.0.0.1:8000/api/order/", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+      body: JSON.stringify({
+        "costume_id": item.costume?.id || null,
+        "funko_id": item.funko?.id || null,
+        "quantity": 1
+      }),
     })
-    .then ((res) => res.json())
-    .then ((data) => {
-      console.log("Response:", data);
-    })
-    .catch((err) => console.error("Error: ", err));
+      .then((res) => res.json())
+      .then((data) => {
+        console.log("Response:", data);
+      })
+      .catch((err) => console.error("Error: ", err));
   }
 
-    const total = cart ? cart.reduce((sum, item) => sum + parseFloat(item.costume.price), 0): 0
-    return (
-        <>
-        
-          <div className="navbar">
-            <Link to={'/'}>
-            <img src="/src/assets/marvel.svg" alt="Marvel Logo" />
-            </Link>
-            <h1>Spider-Man Merchandise</h1>
-          </div>
-          <div className="cart-container">
-            
-                {cart && cart.map(item => (
-                    <div key={item.id} className="cart-item">
-                        <button className="delete-btn" onClick={() => {
-                          removeFromCart(item.id);
-                        }}>X</button>
-                        {item.costume.image && (
-                            <img className="cart-img" src={`http://127.0.0.1:8000/${item.costume.image}`} alt={item.costume.name} />
-                            )}
-                            <div className="cart-product-name">
-                              <h4>{item.costume.name}</h4>
-                            </div>
-                            <div className="cart-price">
-                              <p>${parseInt(item.costume.price)}</p>
-                            </div>
-                            <button className="buy-btn" onClick={() => {
-                              swal.fire({
-                                title: "Transaction Successfull!🎉",
-                                text: `${item.costume.name} is on the way to your destination, we'll reach out to you soon`,
-                                icon: 'success',
-                                confirmButtonColor: '#880808'
-                              });
-                              handleOrderTaking(item);
-                            }}>
-                              Buy
-                            </button>
-                    </div>
-                    
-                ))}
+  const total = cart ? cart.reduce((sum, item) => sum + parseFloat((item.costume || item.funko)?.price || 0), 0) : 0
+  return (
+    <>
 
-          </div>
-          { cart && cart.length > 0 && (
-                   <button className="buy-all-btn" onClick={() => {
-                    swal.fire({
-                      title: "Transaction Successful of All Items!🎉",
-                      icon: "success",
-                      confirmButtonColor: '#880808'
-                    });
-                    handleBuyAll();
-                   }}>                    Buy All
-                  <h5>Total : {"$" + total}</h5></button>           
-                            )}
-          
-          
-        </>
-    )
+      <div className="navbar">
+        <Link to={'/'}>
+          <img src="/src/assets/marvel.svg" alt="Marvel Logo" />
+        </Link>
+        <h1>Spider-Man Merchandise</h1>
+      </div>
+      <div className="cart-container">
+
+        {cart && cart.map(item => {
+          const product = item.costume || item.funko;
+          const isCostume = !!item.costume;
+          const isFunko = !!item.funko;
+          if (!product) return null;
+
+          return (
+            <div key={item.id} className="cart-item">
+              <button className="delete-btn" onClick={() => {
+                removeFromCart(item.id);
+              }}>X</button>
+              {product?.image && (
+                <img className={isCostume ? "costume-img" : "funko-img"} src={`http://127.0.0.1:8000/${product?.image}`} alt={product?.name} />
+              )}
+              <div className="cart-product-name">
+                <h4>{product?.name}</h4>
+              </div>
+              <div className="cart-price">
+                <p>${parseInt(product?.price)}</p>
+              </div>
+              <button className="buy-btn" onClick={() => {
+                swal.fire({
+                  title: "Transaction Successfull!🎉",
+                  text: `${product?.name} is on the way to your destination, we'll reach out to you soon`,
+                  icon: 'success',
+                  confirmButtonColor: '#880808'
+                });
+                handleOrderTaking(item);
+              }}>
+                Buy
+              </button>
+            </div>
+          );
+        })}
+      </div>
+      {cart && cart.length > 0 && (
+        <button className="buy-all-btn" onClick={() => {
+          swal.fire({
+            title: "Transaction Successful of All Items!🎉",
+            icon: "success",
+            confirmButtonColor: '#880808'
+          });
+          handleBuyAll();
+        }}>                    Buy All
+          <h5>Total : {"$" + total}</h5></button>
+      )}
+
+
+    </>
+  )
 
 }

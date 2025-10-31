@@ -9,6 +9,7 @@ import Product from './components/Product'
 import Cart from './components/Cart'
 import Login from './components/Login'
 import Register from './components/Register'
+import Funko from './components/Funko'
 import { Routes, Route } from 'react-router-dom'
 
 function App() {
@@ -22,6 +23,7 @@ function App() {
         <Route path='/login' element={<Login/>}  />
         <Route path='/product/:id' element={<Product/>}></Route>
         <Route path='cart/view' element={<Cart/>}></Route>
+        <Route path='/funko' element={<Funko/>}/>
       </Routes>
     
   );
